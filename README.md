@@ -4,7 +4,7 @@ This is the main repository for IceDB, a Key-Value Store Database Management Sys
 ## Code:
 - Written in C++.
 - The application is a linux command-line application.
-- The code uses the Google C++ Style Guide (https://google.github.io/styleguide/cppguide.html).
+- The code uses the Linux Kernel coding style.
 
 ## Repo Structure:
 The Repo follows a standard C++ Project structure with:
