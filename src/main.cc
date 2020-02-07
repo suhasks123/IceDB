@@ -12,7 +12,7 @@ int main()
     IceDB db;
     db.Open(path);
     system("ls /home/xenon/hello.txt");
-    db.db_file << "Hello I just opened this file.\n";
-    //db.db_file.close();
+    //db.db_file << "Hello .\n";
+    db.Close();
     return 0;
 }

@@ -10,9 +10,11 @@
 
 class IceDB
 {
-public:
-    void Open(std::string, uint32_t);
-    void Open(std::string);
+
+private:
     std::fstream db_file;
 
+public:
+    void Open(std::string, uint32_t = CREATE | WRITE);
+    void Close();
 };
