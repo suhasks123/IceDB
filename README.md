@@ -6,6 +6,16 @@ This is the main repository for IceDB, a Key-Value Store Database Management Sys
 - The application is a linux command-line application.
 - The code uses the Linux kernel coding style (https://www.kernel.org/doc/html/v4.10/process/coding-style.html).
 
+## Build Instructions:
+Make sure the current working directory is the main IceDB directory before running these commands:
+
+```
+$ rm -rf ./build/*
+$ cd build
+$ cmake ..
+$ make
+```
+
 ## Repo Structure:
 The Repo follows a standard C++ Project structure with:
 1. **bin**: For storing binaries after compilation.
