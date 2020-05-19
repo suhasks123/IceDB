@@ -33,4 +33,4 @@ The build is handled by CMake.
 
 ## Contributors:
 - Suhas K S(181CO253) - https://github.com/suhasks123
-- Sai Krishna Anand (181CO244) - https://github.com/CyberSkam
+- Sai Krishna Anand (181CO244) - https://github.com/SaiKrishna1207
