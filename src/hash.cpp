@@ -2,7 +2,7 @@
 #include <iostream>
 #include <string>
 
-#include "/home/sai/Projects/IceDB/IceDB/include/hashClass.hpp"
+#include "../include/hashClass.hpp"
 
 using namespace std;
 
@@ -38,7 +38,7 @@ int hashClass::NumberOfItems(int index)
     
 }
 
-void hashClass::AddValue(string value)
+void hashClass::SetValue(string value)
 {
     int index = Hash(value);
 
@@ -66,29 +66,126 @@ void hashClass::PrintTable()
     int n;
     for(int i = 0; i < TableSize; i++)
     {
-        n = NumberOfItems(i);
-        cout<<"Number of values at index " << i << " are: " << n<<endl;
         Key_Value* ptr = store[i];
+        if(ptr->value == "NULL")
+            continue;
+        n = NumberOfItems(i);
+        cout << "Number of values at index " << i << " are: " << n<<endl;
         while(ptr->next!=NULL)
         {
-            cout<<"--------------------\n";
-            cout<<"Index = "<<i<<endl;
-            cout<<ptr->value<<endl;
+            cout << "--------------------\n";
+            cout << "Index = " << i << endl;
+            cout << ptr->value << endl;
             ptr = ptr->next;
         }   
-        cout<<"--------------------\n";
-        cout<<"Index = "<<i<<endl;
-        cout<<ptr->value<<endl;
-        cout<<"\n";
+        cout << "--------------------\n";
+        cout << "Index = " << i << endl;
+        cout << ptr->value << endl;
+        cout << "\n";
+    }
+}
+
+void hashClass::PrintBucket(int index)
+{
+    if(index < 0 || index >= TableSize)
+    {
+        cout << "Invalid index" << endl;
+        return;
+    }
+    else if(store[index]->value == "NULL")
+    {
+        cout << "Bucket is empty" << endl;
+        return;
+    }
+    cout << "Bucket " << index << " info : " << endl;
+    Key_Value* ptr = store[index];
+    while(ptr != NULL)
+    {
+        cout << "-------------------\n";
+        cout << ptr->value << endl;
+        cout << "-------------------\n";
+        ptr = ptr->next;
+    }
+}
+
+void hashClass::GetValue(string key)
+{
+    int index = Hash(key);
+    bool found = false;
+
+    Key_Value* ptr = store[index];
+    while(ptr != NULL)
+    {
+        if(ptr->value == key)
+        {
+            found = true;
+            break;
+        }
+        ptr = ptr->next;
+    }
+    if(found)
+    {
+        cout << "Value " << key << " present in table at index " << index << "." << endl;
+    }
+    else
+    {
+        cout << key << " was not found in table." << endl;
+    }
+}
+
+void hashClass::DeleteValue(string key)
+{
+    int index = Hash(key);
+    Key_Value* p1;
+    Key_Value* p2;
+    Key_Value* del;
+
+    if(store[index]->value == "NULL")                                               //Empty bucket
+        cout << "Record to be deleted not present in the table." << endl;
+
+    else if(store[index]->value == key && store[index]->next == NULL)               //Single element bucket and match
+    {
+        store[index]->value = "NULL";
+        cout << "Record " << key << " deleted successfully." << endl;
+    } 
+
+    else if(store[index]->value == key && store[index]->next != NULL)               //Multi element bucket and match on 1st value
+    {
+        del = store[index];
+        store[index] = store[index]->next;
+        delete del; 
+        cout << "Record " << key << " deleted successfully." << endl;
+    }   
+    else                                                                            //Multi element bucket and no match on 1st value
+    {
+        p2 = store[index];
+        p1 = store[index]->next;
+
+        while(p1 != NULL && p1->value != key)
+        {
+            p2 = p1;
+            p1 = p1->next;
+        }
+        if(p1 == NULL)                                                              //No match in bucket
+            cout << "Record to be deleted not present in the table." << endl;
+        
+        else
+        {
+            del = p1;
+            p1 = p1->next;
+            p2->next = p1;
+            delete del;
+            cout << "Record " << key << " deleted successfully." << endl;
+        }
     }
 }
 
 int hashClass::Hash(string key)
 {
     int hash = 0;
-    int index;
+    int index, i;
 
-    for (int i = 0; i< key.length(); i++)
+    for (i = 0; i< key.length(); i++)
     {
         hash += (int)key[i];
     }
