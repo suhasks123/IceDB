@@ -22,9 +22,11 @@ class hashClass{
 
         hashClass();
         int Hash(string key);
-        void AddValue(string value);
+        void SetValue(string value);
         int NumberOfItems(int index);
         void PrintTable();
-    
+        void PrintBucket(int index);
+        void GetValue(string key);
+        void DeleteValue(string key);
 
 };
