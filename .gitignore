@@ -1,0 +1,36 @@
+# General
+*.log
+
+# Ignore autotools generated files
+m4
+autom4te.cache
+build-aux
+*/.deps
+*/.libs
+.libs
+*/.dirstamp
+Makefile
+Makefile.in
+aclocal.m4
+configure
+config.h
+config.h.in
+config.guess
+config.status
+config.sub
+depcomp
+install-sh
+ltmain.sh
+missing
+compile
+libtool
+stamp-h1
+.deps/*
+
+# Ignore object files and libraries
+*.o
+*.lo
+*.la
+
+examples/*
+!examples/*.c

@@ -177,6 +177,7 @@ void hashClass::DeleteValue(string key)
             delete del;
             cout << "Record " << key << " deleted successfully." << endl;
         }
+
     }
 }
 
@@ -185,7 +186,7 @@ int hashClass::Hash(string key)
     int hash = 0;
     int index, i;
 
-    for (i = 0; i< key.length(); i++)
+    for (i = 0; i < key.length(); i++)
     {
         hash += (int)key[i];
     }
@@ -194,3 +195,4 @@ int hashClass::Hash(string key)
 
     return index;
 }
+

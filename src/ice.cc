@@ -1,7 +1,7 @@
 #include<iostream>
 #include<fstream>
 
-#include "IceDB.hpp"
+#include "ice.hpp"
 
 using namespace std;
 
