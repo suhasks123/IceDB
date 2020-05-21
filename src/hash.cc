@@ -2,7 +2,7 @@
 #include <iostream>
 #include <string>
 
-#include "/home/sai/Projects/IceDB/IceDB/include/hashClass.hpp"
+#include "hashClass.hpp"
 
 using namespace std;
 
