@@ -10,11 +10,14 @@ This is the main repository for IceDB, a Key-Value Store Database Management Sys
 Make sure the current working directory is the main IceDB directory before running these commands:
 
 ```
+$ autoreconf -i
 $ rm -rf ./build/*
 $ cd build
-$ cmake ..
+$ ../configure
 $ make
 ```
+
+Use `sudo make install` if the application needs to be installed globally.
 
 ## Repo Structure:
 The Repo follows a standard C++ Project structure with:
@@ -28,8 +31,9 @@ The Repo follows a standard C++ Project structure with:
 The build is handled by CMake.
 
 ## Dependencies:
-- CMake (>3.0.0)
-
+- autoconf (>= 2.69)
+- automake (>= 1.15)
+- Libtool (>= 2.4.6)
 
 ## Contributors:
 - Suhas K S(181CO253) - https://github.com/suhasks123
