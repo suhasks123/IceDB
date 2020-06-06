@@ -1,6 +1,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <string>
+#include <bits/stdc++.h>
 
 #include "../include/hashClass.hpp"
 
@@ -11,7 +12,8 @@ hashClass::hashClass()
   for (int i = 0;i<TableSize;i++)
   {
       store[i] = new Key_Value;
-      store[i]->value = "NULL";   
+      store[i]->value = "NULL"; 
+      store[i]->secret = "NULL";  
       store[i]->next = NULL;
   }
 }
@@ -38,13 +40,14 @@ int hashClass::NumberOfItems(int index)
     
 }
 
-void hashClass::SetValue(string value)
+void hashClass::SetValue(string value, string secret)
 {
     int index = Hash(value);
 
     if(store[index]->value=="NULL")
     {
         store[index]->value = value;
+        store[index]->secret = secret;
     }
 
     else
@@ -52,6 +55,7 @@ void hashClass::SetValue(string value)
         Key_Value* x = store[index];
         Key_Value* new_value = new Key_Value;
         new_value->value = value;
+        new_value->secret = secret;
         new_value->next = NULL;
         while (x->next != NULL)
         {
@@ -67,6 +71,7 @@ void hashClass::PrintTable()
     for(int i = 0; i < TableSize; i++)
     {
         Key_Value* ptr = store[i];
+
         if(ptr->value == "NULL")
             continue;
         n = NumberOfItems(i);
@@ -76,11 +81,13 @@ void hashClass::PrintTable()
             cout << "--------------------\n";
             cout << "Index = " << i << endl;
             cout << ptr->value << endl;
+            cout << ptr->secret << endl;
             ptr = ptr->next;
         }   
         cout << "--------------------\n";
         cout << "Index = " << i << endl;
         cout << ptr->value << endl;
+        cout << ptr->secret << endl;
         cout << "\n";
     }
 }
@@ -104,6 +111,8 @@ void hashClass::PrintBucket(int index)
         cout << "-------------------\n";
         cout << ptr->value << endl;
         cout << "-------------------\n";
+        cout << ptr->secret << endl;
+        cout << "-------------------\n";
         ptr = ptr->next;
     }
 }
@@ -126,6 +135,7 @@ void hashClass::GetValue(string key)
     if(found)
     {
         cout << "Value " << key << " present in table at index " << index << "." << endl;
+        cout << "Data : " << ptr->secret << endl;
     }
     else
     {
@@ -177,7 +187,33 @@ void hashClass::DeleteValue(string key)
             delete del;
             cout << "Record " << key << " deleted successfully." << endl;
         }
+    }
+}
 
+void hashClass::UpdateValue(string key, string secret)
+{
+    int index = Hash(key);
+    bool found = false;
+
+    Key_Value* ptr = store[index];
+    while(ptr != NULL)
+    {
+        if(ptr->value == key)
+        {
+            found = true;
+            break;
+        }
+        ptr = ptr->next;
+    }
+    if(found)
+    {
+        ptr->secret = secret;
+        cout << "Value was succesfully updated" << endl;
+    }
+    else
+    {
+        SetValue(key, secret);
+        cout << "New object was created." << endl;
     }
 }
 
@@ -186,7 +222,7 @@ int hashClass::Hash(string key)
     int hash = 0;
     int index, i;
 
-    for (i = 0; i < key.length(); i++)
+    for (i = 0; i< key.length(); i++)
     {
         hash += (int)key[i];
     }
@@ -195,4 +231,3 @@ int hashClass::Hash(string key)
 
     return index;
 }
-
