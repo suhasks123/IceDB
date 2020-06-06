@@ -56,3 +56,9 @@ void IceDB::Delete(string key)
     hashClass hashObj;
     hashObj.DeleteValue(key);
 }
+
+void IceDB::Update(string key, string data)
+{
+    hashClass hashObj;
+    hashObj.UpdateValue(key, data);
+}

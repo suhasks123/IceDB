@@ -17,7 +17,8 @@ private:
 public:
     void Open(std::string, uint32_t = CREATE | WRITE);
     void Close();
-    void Set(string key, string secret);
+    void Set(string key, string data);
     void Get(string key);
     void Delete(string key);
+    void Update(string key, string data);
 };

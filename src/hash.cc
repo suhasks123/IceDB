@@ -9,11 +9,10 @@ using namespace std;
 
 hashClass::hashClass()
 {
-  for (int i = 0;i<TableSize;i++)
+  for (int i = 0;i < TableSize;i++)
   {
       store[i] = new Key_Value;
-      store[i]->value = "NULL"; 
-      store[i]->secret = "NULL";  
+      store[i]->key = "NULL"; 
       store[i]->next = NULL;
   }
 }
@@ -21,7 +20,7 @@ hashClass::hashClass()
 int hashClass::NumberOfItems(int index)
 {
     int count = 0;
-    if(store[index]->value == "NULL")
+    if(store[index]->key == "NULL")
     {
         return count;
     }
@@ -40,22 +39,50 @@ int hashClass::NumberOfItems(int index)
     
 }
 
-void hashClass::SetValue(string value, string secret)
+void hashClass::SetValue(string key, string data)
 {
-    int index = Hash(value);
+    int index = Hash(key);
+    vector<string> tokens;
+    stringstream check1(data);
+    string intermediate;
 
-    if(store[index]->value=="NULL")
+    while(getline(check1, intermediate, ',')) 
+        tokens.push_back(intermediate); 
+
+    if(store[index]->key == "NULL")
     {
-        store[index]->value = value;
-        store[index]->secret = secret;
+        store[index]->key = key;
+        for(int i = 0;i < tokens.size(); i++)
+        {
+            string token = tokens[i];
+            stringstream check2(token);
+            string inter;
+            getline(check2, inter, ':');
+            string a = inter;
+            getline(check2, inter, ':');
+            string t = inter;
+            store[index]->mp[a] = t;
+            // cout << a << " is set for : " << key << endl;
+        }
     }
 
     else
     {
         Key_Value* x = store[index];
         Key_Value* new_value = new Key_Value;
-        new_value->value = value;
-        new_value->secret = secret;
+        new_value->key = key;
+        for(int i = 0;i < tokens.size(); i++)
+        {
+            string token = tokens[i];
+            stringstream check2(token);
+            string inter;
+            getline(check2, inter, ':');
+            string a = inter;
+            getline(check2, inter, ':');
+            string t = inter;
+            new_value->mp[a] = t;
+            // cout << a << " is set for : " << key << endl;
+        }
         new_value->next = NULL;
         while (x->next != NULL)
         {
@@ -72,22 +99,25 @@ void hashClass::PrintTable()
     {
         Key_Value* ptr = store[i];
 
-        if(ptr->value == "NULL")
+        if(ptr->key == "NULL")
             continue;
         n = NumberOfItems(i);
-        cout << "Number of values at index " << i << " are: " << n<<endl;
+        cout << "Number of values at index " << i << " are: " << n <<endl;
         while(ptr->next!=NULL)
         {
             cout << "--------------------\n";
             cout << "Index = " << i << endl;
-            cout << ptr->value << endl;
-            cout << ptr->secret << endl;
+            cout << ptr->key << endl;
+            for(auto j: ptr->mp){
+                cout << j.first << " : " << j.second << endl;
+            }
             ptr = ptr->next;
         }   
         cout << "--------------------\n";
         cout << "Index = " << i << endl;
-        cout << ptr->value << endl;
-        cout << ptr->secret << endl;
+        cout << ptr->key << endl;
+        for(auto j: ptr->mp)
+            cout << j.first << " : " << j.second << endl;
         cout << "\n";
     }
 }
@@ -99,7 +129,7 @@ void hashClass::PrintBucket(int index)
         cout << "Invalid index" << endl;
         return;
     }
-    else if(store[index]->value == "NULL")
+    else if(store[index]->key == "NULL")
     {
         cout << "Bucket is empty" << endl;
         return;
@@ -109,10 +139,13 @@ void hashClass::PrintBucket(int index)
     while(ptr != NULL)
     {
         cout << "-------------------\n";
-        cout << ptr->value << endl;
+        cout << ptr->key << endl;
         cout << "-------------------\n";
-        cout << ptr->secret << endl;
-        cout << "-------------------\n";
+        for(auto i : ptr->mp)
+        {
+            cout << i.first << " : " << i.second << endl;
+            cout << "-------------------\n";
+        }
         ptr = ptr->next;
     }
 }
@@ -125,7 +158,7 @@ void hashClass::GetValue(string key)
     Key_Value* ptr = store[index];
     while(ptr != NULL)
     {
-        if(ptr->value == key)
+        if(ptr->key == key)
         {
             found = true;
             break;
@@ -135,7 +168,10 @@ void hashClass::GetValue(string key)
     if(found)
     {
         cout << "Value " << key << " present in table at index " << index << "." << endl;
-        cout << "Data : " << ptr->secret << endl;
+        // cout << "Data : \n";
+        for(auto i : ptr->mp)
+            cout << i.first << " : " << i.second << endl;
+        cout << "-------------------\n";
     }
     else
     {
@@ -150,16 +186,16 @@ void hashClass::DeleteValue(string key)
     Key_Value* p2;
     Key_Value* del;
 
-    if(store[index]->value == "NULL")                                               //Empty bucket
+    if(store[index]->key == "NULL")                                               //Empty bucket
         cout << "Record to be deleted not present in the table." << endl;
 
-    else if(store[index]->value == key && store[index]->next == NULL)               //Single element bucket and match
+    else if(store[index]->key == key && store[index]->next == NULL)               //Single element bucket and match
     {
-        store[index]->value = "NULL";
+        store[index]->key = "NULL";
         cout << "Record " << key << " deleted successfully." << endl;
     } 
 
-    else if(store[index]->value == key && store[index]->next != NULL)               //Multi element bucket and match on 1st value
+    else if(store[index]->key == key && store[index]->next != NULL)               //Multi element bucket and match on 1st value
     {
         del = store[index];
         store[index] = store[index]->next;
@@ -171,7 +207,7 @@ void hashClass::DeleteValue(string key)
         p2 = store[index];
         p1 = store[index]->next;
 
-        while(p1 != NULL && p1->value != key)
+        while(p1 != NULL && p1->key != key)
         {
             p2 = p1;
             p1 = p1->next;
@@ -190,15 +226,22 @@ void hashClass::DeleteValue(string key)
     }
 }
 
-void hashClass::UpdateValue(string key, string secret)
+void hashClass::UpdateValue(string key, string changeData)
 {
     int index = Hash(key);
     bool found = false;
 
+    vector<string> tokens;
+    stringstream check1(changeData);
+    string intermediate;
+
+    while(getline(check1, intermediate, ',')) 
+        tokens.push_back(intermediate); 
+
     Key_Value* ptr = store[index];
     while(ptr != NULL)
     {
-        if(ptr->value == key)
+        if(ptr->key == key)
         {
             found = true;
             break;
@@ -207,12 +250,22 @@ void hashClass::UpdateValue(string key, string secret)
     }
     if(found)
     {
-        ptr->secret = secret;
+        for(int i = 0;i < tokens.size(); i++)
+        {
+            string token = tokens[i];
+            stringstream check2(token);
+            string inter;
+            getline(check2, inter, ':');
+            string a = inter;
+            getline(check2, inter, ':');
+            string t = inter;
+            store[index]->mp[a] = t;
+        }
         cout << "Value was succesfully updated" << endl;
     }
     else
     {
-        SetValue(key, secret);
+        SetValue(key, changeData);
         cout << "New object was created." << endl;
     }
 }
