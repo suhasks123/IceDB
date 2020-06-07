@@ -9,7 +9,7 @@ libice_la_SOURCES = \
 libice_la_CPPFLAGS = -I$(top_srcdir)/include
 
 
-bin_PROGRAMS = bin/ice
-bin_ice_SOURCES = src/main.cc
-bin_ice_CPPFLAGS = -I$(top_srcdir)/include
-bin_ice_LDADD = libice.la
+noinst_PROGRAMS = bin/ice_example
+bin_ice_example_SOURCES = src/main.cc
+bin_ice_example_CPPFLAGS = -I$(top_srcdir)/include
+bin_ice_example_LDADD = libice.la
