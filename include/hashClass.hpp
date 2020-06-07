@@ -1,6 +1,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <string>
+#include <bits/stdc++.h>
 
 using namespace std;
 
@@ -12,7 +13,8 @@ class hashClass{
         static const int TableSize = 10;
 
         struct Key_Value{
-            string value;
+            string key;
+            std::unordered_map<string, string> mp;
             Key_Value* next;
         };
 
@@ -22,11 +24,11 @@ class hashClass{
 
         hashClass();
         int Hash(string key);
-        void SetValue(string value);
+        void SetValue(string key, string data);
         int NumberOfItems(int index);
         void PrintTable();
         void PrintBucket(int index);
         void GetValue(string key);
         void DeleteValue(string key);
-
+        void UpdateValue(string key, string data);
 };

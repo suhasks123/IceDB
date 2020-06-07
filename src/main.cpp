@@ -1,3 +1,4 @@
+
 #include<iostream>
 #include<cstdlib>
 #include<string>
@@ -11,25 +12,24 @@ int main(int argc, char** argv){
 
 // For testing:
 
-    // hashClass hashObj;
-    // hashObj.SetValue("Sai");
-    // hashObj.SetValue("Pachi");
-    // hashObj.SetValue("Saji");
-    // hashObj.SetValue("Krithik");
-    // hashObj.SetValue("Hema");
-    // hashObj.SetValue("Dhanwin");
-    // hashObj.SetValue("Arnav");
-    // hashObj.SetValue("Sanjana");
-    // hashObj.SetValue("Anand");
-    // hashObj.SetValue("Suhas");
+    hashClass hashObj;
+    hashObj.SetValue("Sai", "Interest:Gym,Age:20");
+    hashObj.SetValue("Pachi", "Interest:Chips,Age:20");
+    hashObj.SetValue("Saji", "Language:Mallu,Age:20");
+    hashObj.SetValue("Krithik", "From:Goan,Age:20");
+    hashObj.SetValue("Dhanwin", "Interest:CP God,Age:20");
+    hashObj.SetValue("Arnav", "Interest:Marketer,Age:20");
+    hashObj.SetValue("Anand", "Lol:LMAO,Age:45");
+    hashObj.SetValue("Suhas", "Interest:OS God,Age:55");
     
     // cout << hashObj.NumberOfItems(5) << endl;
 
-    // hashObj.PrintTable();
-    // hashObj.GetValue("Sai");
+    // hashObj.PrintBucket(5);
+    // hashObj.UpdateValue("Sai", "Age:25");
     // hashObj.DeleteValue("Saji");
+    hashObj.GetValue("Saji");
     // cout << "\n\n\n";
-    // hashObj.PrintTable();
+    hashObj.PrintTable();
 
     return 0;
 }

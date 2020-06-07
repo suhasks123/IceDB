@@ -1,7 +1,8 @@
 #include<iostream>
 #include<fstream>
 
-#include "ice.hpp"
+#include "../include/ice.hpp"
+#include "../include/hashClass.hpp"
 
 using namespace std;
 
@@ -36,4 +37,28 @@ void IceDB::Close()
 {
     if(this->db_file.is_open())
         this->db_file.close();
+}
+
+void IceDB::Set(string key, string data)
+{
+    hashClass hashObj;
+    hashObj.SetValue(key, data);
+}
+
+void IceDB::Get(string key)
+{
+    hashClass hashObj;
+    hashObj.GetValue(key);
+}
+
+void IceDB::Delete(string key)
+{
+    hashClass hashObj;
+    hashObj.DeleteValue(key);
+}
+
+void IceDB::Update(string key, string data)
+{
+    hashClass hashObj;
+    hashObj.UpdateValue(key, data);
 }
