@@ -1,62 +1,73 @@
-#include<iostream>
-#include<fstream>
+#include <iostream>
+#include <fstream>
+#include <string>
 
-#include "../include/ice.hpp"
-#include "../include/hashClass.hpp"
+#include "ice.hpp"
+#include "hashClass.hpp"
 
-
-void IceDB::Open(string path, uint32_t open_opt)
+// Initialize the main path of the created databases to the default value
+IceDB::IceDB()
 {
-    ios_base::openmode opt;
-    if ((open_opt & CREATE) > 0) {
-        opt |= ios::trunc;
-    }
-    else {
-        opt |= ios::ate;
-    }
-
-    if ((open_opt & WRITE) > 0) {
-        opt |= ios::out;
-        cout << "write\n";
-    }
-
-    if ((open_opt & READ) > 0) {
-        opt |= ios::in;
-    }
-
-    if ((open_opt & TRUNC) > 0) {
-        opt |= ios::trunc;
-    }
-
-    this->db_file.open(path, opt);
+    this.path = "/var/lib/icedb/";
 }
 
-void IceDB::Close()
+void IceDB::Open(std::string name)
 {
-    if(this->db_file.is_open())
-        this->db_file.close();
+    std::fstream iced, icem;
+    std::string iced_path, icem_path;
+
+    // Prepare the path for the .iced file and send it to hashClass
+    iced_path.append(this.path);
+    iced_path.append(name);
+    iced_path.append(".iced");
+    iced.open(iced_path, std::fstream::in);
+    this.db.hash.ReadDB(iced);
+
+    // Prepare the path for the .icem file and send it to Metadata class
+    icem_path.append(this.path);
+    icem_path.append(name);
+    icem_path.append(".icem");
+    icem.open(icem_path, std::fstream::in);
+    this.db.meta.read_metadata(icem);
+
+}
+
+void IceDB::Close(std::string name)
+{
+    std::fstream iced, icem;
+    std::string iced_path, icem_path;
+
+    // Prepare the path for the .iced file and send it to hashClass
+    iced_path.append(this.path);
+    iced_path.append(name);
+    iced_path.append(".iced");
+    iced.open(iced_path, std::fstream::out | std::fstream::trunc);
+    this.db.hash.WriteDB(iced);
+
+    // Prepare the path for the .icem file and send it to Metadata class
+    icem_path.append(this.path);
+    icem_path.append(name);
+    icem_path.append(".iced");
+    icem.open(icem_path, std::fstream::out | std::fstream::trunc);
+    this.db.meta.write_metadata(icem);
 }
 
 void IceDB::Set(string key, string data)
 {
-    hashClass hashObj;
-    hashObj.SetValue(key, data);
+    this.db.hash.SetValue(key, data);
 }
 
 void IceDB::Get(string key)
 {
-    hashClass hashObj;
-    hashObj.GetValue(key);
+    this.db.hash.GetValue(key);
 }
 
 void IceDB::Delete(string key)
 {
-    hashClass hashObj;
-    hashObj.DeleteValue(key);
+    this.db.hash.DeleteValue(key);
 }
 
 void IceDB::Update(string key, string data)
 {
-    hashClass hashObj;
-    hashObj.UpdateValue(key, data);
+    this.db.hash.UpdateValue(key, data);
 }

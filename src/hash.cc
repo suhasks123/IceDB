@@ -4,7 +4,7 @@
 #include <fstream>
 #include <bits/stdc++.h>
 
-#include "../include/hashClass.hpp"
+#include "hashClass.hpp"
 
 hashClass::hashClass()
 {

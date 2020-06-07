@@ -1,5 +1,8 @@
-#include<iostream>
-#include<fstream>
+#include <iostream>
+#include <fstream>
+#include <ctime>
+
+#include "hashClass.hpp"
 
 // Defining Macros
 #ifndef ICE_HPP
@@ -10,14 +13,35 @@
 #define READ 4
 #define TRUNC 8
 
+class Metadata
+{
+private:
+    std::string name;
+    std::string last_modified;
+    int size;
+    void write_metadata(std::fstream, std:string);
+    void read_metadata(std::fstream);
+    void display_metadata();
+};
+
+class Database
+{
+public:
+    hashClass hash;
+    Metadata meta;
+    Database();
+};
+
 class IceDB
 {
 
 private:
-    std::fstream db_file;
+    std::string path;
 
 public:
-    void Open(std::string, uint32_t = CREATE | WRITE);
+    Database db;
+    IceDB();
+    void Open(std::string);
     void Close();
     void Set(string key, string data);
     void Get(string key);

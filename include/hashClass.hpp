@@ -5,8 +5,8 @@
 #include <bits/stdc++.h>
 
 
-#ifndef ICE_HPP
-#define ICE_HPP
+#ifndef HASHCLASS_HPP
+#define HASHCLASS_HPP
 //#define HASH_H
 
 class hashClass{
