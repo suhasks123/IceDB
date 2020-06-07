@@ -9,7 +9,6 @@ using namespace std;
 void IceDB::Open(string path, uint32_t open_opt)
 {
     ios_base::openmode opt;
-    
     if ((open_opt & CREATE) > 0) {
         opt |= ios::trunc;
     }

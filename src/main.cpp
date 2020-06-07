@@ -23,7 +23,6 @@ int main(int argc, char** argv){
     hashObj.SetValue("Suhas", "Interest:OS God,Age:55");
     
     // cout << hashObj.NumberOfItems(5) << endl;
-
     // hashObj.PrintBucket(5);
     // hashObj.UpdateValue("Sai", "Age:25");
     // hashObj.DeleteValue("Saji");
