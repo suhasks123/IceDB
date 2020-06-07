@@ -34,3 +34,5 @@ class hashClass{
         void DeleteValue(string key);
         void UpdateValue(string key, string data);
 };
+
+#endif
