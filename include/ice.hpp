@@ -18,10 +18,10 @@ class Metadata
 private:
     std::string name;
     std::string last_modified;
-    int size;
+    std::string size;
 public:
-    void write_metadata(std::fstream *, std::string);
-    void read_metadata(std::fstream *);
+    void write_metadata(std::ofstream&, std::string, int);
+    void read_metadata(std::ifstream&);
     void display_metadata();
 };
 
@@ -44,10 +44,10 @@ public:
     IceDB();
     void Open(std::string);
     void Close(std::string name);
-    void Set(string key, string data);
-    void Get(string key);
-    void Delete(string key);
-    void Update(string key, string data);
+    void Set(std::string key, std::string data);
+    void Get(std::string key);
+    void Delete(std::string key);
+    void Update(std::string key, std::string data);
 };
 
 #endif

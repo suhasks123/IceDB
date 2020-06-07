@@ -16,7 +16,7 @@ hashClass::hashClass()
   }
 }
 
-void hashClass::ReadDB(std::fstream fptr)  
+void hashClass::ReadDB(std::ifstream& fptr)  
 {
     int i;
     std::string str;
@@ -29,10 +29,10 @@ void hashClass::ReadDB(std::fstream fptr)
         std::string data = str.substr(i + 1);                        //This is the data part, the key value pairs to be stored in the map.
         this->SetValue(key, data);
     }
-    fptr->close();
+    fptr.close();
 }
 
-void hashClass::WriteDB(std::fstream fptr)
+void hashClass::WriteDB(std::ofstream& fptr)
 {
     int i;
     for(i = 0;i < TableSize; i++)
@@ -50,7 +50,7 @@ void hashClass::WriteDB(std::fstream fptr)
                 s += ',' + key + ':' + value;
                 s += "\n";
             }
-            fptr << s << std::endl;                                  //Write to file.
+            fptr << s;                                 //Write to file.
         }
         std::string s = ptr->key;                                    //For last item.
         for(auto j: ptr->mp)
@@ -60,7 +60,7 @@ void hashClass::WriteDB(std::fstream fptr)
             s += ',' + key + ':' + value;
             s += "\n";
         }
-        fptr << s << std::endl;
+        fptr << s;
     }
 }
 

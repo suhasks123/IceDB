@@ -2,5 +2,5 @@
 
 Database::Database()
 {
-    hash = new hashClass();
+    hash = *(new hashClass());
 }

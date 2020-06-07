@@ -25,8 +25,8 @@ class hashClass{
     public:
 
         hashClass();
-        void ReadDB(std::fstream fptr);
-        void WriteDB(std::fstream fptr);
+        void ReadDB(std::ifstream&);
+        void WriteDB(std::ofstream&);
         int Hash(std::string key);
         void SetValue(std::string key, std::string data);
         int findTableSize();

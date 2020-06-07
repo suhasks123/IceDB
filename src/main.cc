@@ -7,12 +7,6 @@ using namespace std;
 
 int main()
 {
-    string path = "/home/xenon/hello.txt";
-    
-    IceDB db;
-    db.Open(path);
-    system("ls /home/xenon/hello.txt");
-    //db.db_file << "Hello .\n";
-    db.Close();
+    // Example implementation to go here
     return 0;
 }
