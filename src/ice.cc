@@ -4,7 +4,6 @@
 #include "../include/ice.hpp"
 #include "../include/hashClass.hpp"
 
-using namespace std;
 
 void IceDB::Open(string path, uint32_t open_opt)
 {

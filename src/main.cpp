@@ -5,8 +5,6 @@
 
 #include "../include/hashClass.hpp"
 
-using namespace std;
-
 int main(int argc, char** argv){
 
 
@@ -22,12 +20,12 @@ int main(int argc, char** argv){
     hashObj.SetValue("Anand", "Lol:LMAO,Age:45");
     hashObj.SetValue("Suhas", "Interest:OS God,Age:55");
     
-    // cout << hashObj.NumberOfItems(5) << endl;
+    // std::cout << hashObj.NumberOfItems(5) << endl;
     // hashObj.PrintBucket(5);
     // hashObj.UpdateValue("Sai", "Age:25");
     // hashObj.DeleteValue("Saji");
     hashObj.GetValue("Saji");
-    // cout << "\n\n\n";
+    // std::cout << "\n\n\n";
     hashObj.PrintTable();
 
     return 0;
