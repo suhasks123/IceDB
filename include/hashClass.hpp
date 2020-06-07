@@ -4,7 +4,6 @@
 #include <fstream>
 #include <bits/stdc++.h>
 
-using namespace std;
 
 #ifndef ICE_HPP
 #define ICE_HPP
@@ -16,8 +15,8 @@ class hashClass{
         static const int TableSize = 10;
 
         struct Key_Value{
-            string key;
-            std::map<string, string> mp;
+            std::string key;
+            std::map<std::string, std::string> mp;
             Key_Value* next;
         };
 
@@ -26,16 +25,17 @@ class hashClass{
     public:
 
         hashClass();
-        void ReadDB(fstream fptr);
-        void WriteDB(fstream fptr);
-        int Hash(string key);
-        void SetValue(string key, string data);
+        void ReadDB(std::fstream fptr);
+        void WriteDB(std::fstream fptr);
+        int Hash(std::string key);
+        void SetValue(std::string key, std::string data);
+        int findTableSize();
         int NumberOfItems(int index);
         void PrintTable();
         void PrintBucket(int index);
-        void GetValue(string key);
-        void DeleteValue(string key);
-        void UpdateValue(string key, string data);
+        void GetValue(std::string key);
+        void DeleteValue(std::string key);
+        void UpdateValue(std::string key, std::string data);
 };
 
 #endif
