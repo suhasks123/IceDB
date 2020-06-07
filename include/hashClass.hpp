@@ -5,6 +5,8 @@
 
 using namespace std;
 
+#ifndef ICE_HPP
+#define ICE_HPP
 //#define HASH_H
 
 class hashClass{
