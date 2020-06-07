@@ -1,6 +1,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <string>
+#include <fstream>
 #include <bits/stdc++.h>
 
 #include "../include/hashClass.hpp"
@@ -11,32 +12,74 @@ hashClass::hashClass()
 {
   for (int i = 0;i < TableSize;i++)
   {
-      store[i] = new Key_Value;
-      store[i]->key = "NULL"; 
-      store[i]->next = NULL;
+      this->store[i] = new Key_Value;
+      this->store[i]->key = "NULL"; 
+      this->store[i]->next = NULL;
   }
+}
+
+void hashClass::ReadDB(fstream fptr)
+{
+    int i;
+    string str;
+    while(getline(fptr, str))
+    {
+        i = 0;
+        while(str[i] != ',')
+            i++;
+        string key = str.substr(0, i);                          //When writing, we store the key first, a comma, followed by the key value pairs, each separated by a comma.
+        string data = str.substr(i + 1);                        //This is the data part, the key value pairs to be stored in the map.
+        this->SetValue(key, data);
+    }
+    fptr.close();
+}
+
+void hashClass::WriteDB(fstream fptr)
+{
+    int i;
+    for(i = 0;i < TableSize; i++)
+    {
+        Key_Value* ptr = this->store[i];
+        if(ptr->key == "NULL")
+            continue;
+        while(ptr->next != NULL)
+        {
+            string s = ptr->key;
+            for(auto j: ptr->mp)
+            {
+                string key = j.first;
+                string value = j.second;
+                s += ',' + key + ':' + value;
+            }
+            fptr << s << endl;
+        }
+        string s = ptr->key;
+        for(auto j: ptr->mp)
+        {
+            string key = j.first;
+            string value = j.second;
+            s += ',' + key + ':' + value;
+        }
+        fptr << s << endl;
+    }
 }
 
 int hashClass::NumberOfItems(int index)
 {
     int count = 0;
-    if(store[index]->key == "NULL")
-    {
+    if(this->store[index]->key == "NULL")
         return count;
-    }
-
     else
     {
         count++;
-        Key_Value* ptr = store[index];
+        Key_Value* ptr = this->store[index];
         while(ptr->next != NULL)
         {
             count++;
             ptr = ptr->next;
         }
     }
-    return count;
-    
+    return count; 
 }
 
 void hashClass::SetValue(string key, string data)
@@ -49,9 +92,9 @@ void hashClass::SetValue(string key, string data)
     while(getline(check1, intermediate, ',')) 
         tokens.push_back(intermediate); 
 
-    if(store[index]->key == "NULL")
+    if(this->store[index]->key == "NULL")
     {
-        store[index]->key = key;
+        this->store[index]->key = key;
         for(int i = 0;i < tokens.size(); i++)
         {
             string token = tokens[i];
@@ -61,14 +104,14 @@ void hashClass::SetValue(string key, string data)
             string a = inter;
             getline(check2, inter, ':');
             string t = inter;
-            store[index]->mp[a] = t;
+            this->store[index]->mp[a] = t;
             // cout << a << " is set for : " << key << endl;
         }
     }
 
     else
     {
-        Key_Value* x = store[index];
+        Key_Value* x = this->store[index];
         Key_Value* new_value = new Key_Value;
         new_value->key = key;
         for(int i = 0;i < tokens.size(); i++)
@@ -97,11 +140,13 @@ void hashClass::PrintTable()
     int n;
     for(int i = 0; i < TableSize; i++)
     {
-        Key_Value* ptr = store[i];
+        Key_Value* ptr = this->store[i];
 
         if(ptr->key == "NULL")
             continue;
+
         n = NumberOfItems(i);
+
         cout << "Number of values at index " << i << " are: " << n <<endl;
         while(ptr->next!=NULL)
         {
@@ -129,13 +174,13 @@ void hashClass::PrintBucket(int index)
         cout << "Invalid index" << endl;
         return;
     }
-    else if(store[index]->key == "NULL")
+    else if(this->store[index]->key == "NULL")
     {
         cout << "Bucket is empty" << endl;
         return;
     }
     cout << "Bucket " << index << " info : " << endl;
-    Key_Value* ptr = store[index];
+    Key_Value* ptr = this->store[index];
     while(ptr != NULL)
     {
         cout << "-------------------\n";
@@ -155,7 +200,7 @@ void hashClass::GetValue(string key)
     int index = Hash(key);
     bool found = false;
 
-    Key_Value* ptr = store[index];
+    Key_Value* ptr = this->store[index];
     while(ptr != NULL)
     {
         if(ptr->key == key)
@@ -186,26 +231,26 @@ void hashClass::DeleteValue(string key)
     Key_Value* p2;
     Key_Value* del;
 
-    if(store[index]->key == "NULL")                                               //Empty bucket
+    if(this->store[index]->key == "NULL")                                               //Empty bucket
         cout << "Record to be deleted not present in the table." << endl;
 
-    else if(store[index]->key == key && store[index]->next == NULL)               //Single element bucket and match
+    else if(this->store[index]->key == key && this->store[index]->next == NULL)               //Single element bucket and match
     {
-        store[index]->key = "NULL";
+        this->store[index]->key = "NULL";
         cout << "Record " << key << " deleted successfully." << endl;
     } 
 
-    else if(store[index]->key == key && store[index]->next != NULL)               //Multi element bucket and match on 1st value
+    else if(this->store[index]->key == key && this->store[index]->next != NULL)               //Multi element bucket and match on 1st value
     {
-        del = store[index];
-        store[index] = store[index]->next;
+        del = this->store[index];
+        this->store[index] = this->store[index]->next;
         delete del; 
         cout << "Record " << key << " deleted successfully." << endl;
     }   
     else                                                                            //Multi element bucket and no match on 1st value
     {
-        p2 = store[index];
-        p1 = store[index]->next;
+        p2 = this->store[index];
+        p1 = this->store[index]->next;
 
         while(p1 != NULL && p1->key != key)
         {
@@ -238,7 +283,7 @@ void hashClass::UpdateValue(string key, string changeData)
     while(getline(check1, intermediate, ',')) 
         tokens.push_back(intermediate); 
 
-    Key_Value* ptr = store[index];
+    Key_Value* ptr = this->store[index];
     while(ptr != NULL)
     {
         if(ptr->key == key)
@@ -259,7 +304,7 @@ void hashClass::UpdateValue(string key, string changeData)
             string a = inter;
             getline(check2, inter, ':');
             string t = inter;
-            store[index]->mp[a] = t;
+            this->store[index]->mp[a] = t;
         }
         cout << "Value was succesfully updated" << endl;
     }

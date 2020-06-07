@@ -1,6 +1,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <string>
+#include <fstream>
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -14,7 +15,7 @@ class hashClass{
 
         struct Key_Value{
             string key;
-            std::unordered_map<string, string> mp;
+            std::map<string, string> mp;
             Key_Value* next;
         };
 
@@ -23,6 +24,8 @@ class hashClass{
     public:
 
         hashClass();
+        void ReadDB(fstream fptr);
+        void WriteDB(fstream fptr);
         int Hash(string key);
         void SetValue(string key, string data);
         int NumberOfItems(int index);
