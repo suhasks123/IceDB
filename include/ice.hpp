@@ -19,8 +19,9 @@ private:
     std::string name;
     std::string last_modified;
     int size;
-    void write_metadata(std::fstream, std:string);
-    void read_metadata(std::fstream);
+public:
+    void write_metadata(std::fstream *, std::string);
+    void read_metadata(std::fstream *);
     void display_metadata();
 };
 
@@ -42,7 +43,7 @@ public:
     Database db;
     IceDB();
     void Open(std::string);
-    void Close();
+    void Close(std::string name);
     void Set(string key, string data);
     void Get(string key);
     void Delete(string key);

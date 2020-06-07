@@ -29,7 +29,7 @@ void hashClass::ReadDB(std::fstream fptr)
         std::string data = str.substr(i + 1);                        //This is the data part, the key value pairs to be stored in the map.
         this->SetValue(key, data);
     }
-    fptr.close();
+    fptr->close();
 }
 
 void hashClass::WriteDB(std::fstream fptr)
@@ -48,6 +48,7 @@ void hashClass::WriteDB(std::fstream fptr)
                 std::string key = j.first;
                 std::string value = j.second;
                 s += ',' + key + ':' + value;
+                s += "\n";
             }
             fptr << s << std::endl;                                  //Write to file.
         }
@@ -57,6 +58,7 @@ void hashClass::WriteDB(std::fstream fptr)
             std::string key = j.first;
             std::string value = j.second;
             s += ',' + key + ':' + value;
+            s += "\n";
         }
         fptr << s << std::endl;
     }

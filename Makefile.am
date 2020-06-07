@@ -4,8 +4,10 @@ noinst_HEADERS = include/hashClass.hpp
 
 lib_LTLIBRARIES = libice.la
 libice_la_SOURCES = \
- src/hash.cc\
- src/ice.cc
+ src/hash.cc \
+ src/ice.cc \
+ src/Metadata.cc \
+ src/Database.cc
 libice_la_CPPFLAGS = -I$(top_srcdir)/include
 
 

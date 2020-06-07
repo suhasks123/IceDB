@@ -5,7 +5,7 @@
 #include "ice.hpp"
 #include "hashClass.hpp"
 
-void Metadata::read_metadata(std::fstream icem)
+void Metadata::read_metadata(std::fstream *icem)
 {
     std::string buf;
     int i=0;
@@ -25,7 +25,7 @@ void Metadata::read_metadata(std::fstream icem)
     return;
 }
 
-void Metadata::write_metadata(std::fstream icem, std::string name)
+void Metadata::write_metadata(std::fstream *icem, std::string name)
 {
     // Update the size
     int size = 0;
