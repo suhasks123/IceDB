@@ -2,6 +2,8 @@
 #include<fstream>
 
 // Defining Macros
+#ifndef ICE_HPP
+#define ICE_HPP
 
 #define CREATE 1
 #define WRITE 2
@@ -22,3 +24,5 @@ public:
     void Delete(string key);
     void Update(string key, string data);
 };
+
+#endif

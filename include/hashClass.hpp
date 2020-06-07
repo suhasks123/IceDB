@@ -4,6 +4,9 @@
 #include <fstream>
 #include <bits/stdc++.h>
 
+
+#ifndef ICE_HPP
+#define ICE_HPP
 //#define HASH_H
 
 class hashClass{
@@ -34,3 +37,5 @@ class hashClass{
         void DeleteValue(std::string key);
         void UpdateValue(std::string key, std::string data);
 };
+
+#endif
