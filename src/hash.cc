@@ -22,11 +22,13 @@ void hashClass::ReadDB(std::ifstream& fptr)
     std::string str;
     while(getline(fptr, str))
     {
+        std::cout << "HERE\n";
         i = 0;
         while(str[i] != ',')
             i++;
         std::string key = str.substr(0, i);                          //When writing, we store the key first, a comma, followed by the key value pairs to be inserted in the map, each separated by a comma.
         std::string data = str.substr(i + 1);                        //This is the data part, the key value pairs to be stored in the map.
+        std::cout << key << " : " << data;
         this->SetValue(key, data);
     }
     fptr.close();
@@ -49,7 +51,8 @@ void hashClass::WriteDB(std::ofstream& fptr)
                 std::string value = j.second;
                 s += ',' + key + ':' + value;
             }
-            fptr << s << std::endl;   
+            s += "\n";
+            fptr << s;   
             ptr = ptr->next;                                         //Write to file.
         }
         std::string s = ptr->key;                                    //For last item.
@@ -59,8 +62,8 @@ void hashClass::WriteDB(std::ofstream& fptr)
             std::string value = j.second;
             s += ',' + key + ':' + value;
         }
-        // s += "\n";
-        fptr << s << std::endl;
+        s += "\n";
+        fptr << s;
     }
     fptr.close();
 }
