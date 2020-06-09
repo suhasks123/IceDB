@@ -8,6 +8,7 @@
 // Initialize the main path of the created databases to the default value
 IceDB::IceDB()
 {
+    system("mkdir /var/lib/icedb");
     this->path = "/var/lib/icedb/";
 }
 
