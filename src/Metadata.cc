@@ -22,6 +22,8 @@ void Metadata::read_metadata(std::ifstream& icem)
     getline(icem, buf);
     this->size = buf;
 
+    icem.close();
+
     return;
 }
 
@@ -41,6 +43,8 @@ void Metadata::write_metadata(std::ofstream& icem, std::string name, int size)
     icem << this->name << "\n";
     icem << this->last_modified << "\n";
     icem << this->size << "\n";
+
+    icem.close();
 }
 
 void Metadata::display_metadata()

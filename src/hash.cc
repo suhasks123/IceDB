@@ -48,9 +48,9 @@ void hashClass::WriteDB(std::ofstream& fptr)
                 std::string key = j.first;
                 std::string value = j.second;
                 s += ',' + key + ':' + value;
-                s += "\n";
             }
-            fptr << s;                                 //Write to file.
+            fptr << s << std::endl;   
+            ptr = ptr->next;                                         //Write to file.
         }
         std::string s = ptr->key;                                    //For last item.
         for(auto j: ptr->mp)
@@ -58,10 +58,11 @@ void hashClass::WriteDB(std::ofstream& fptr)
             std::string key = j.first;
             std::string value = j.second;
             s += ',' + key + ':' + value;
-            s += "\n";
         }
-        fptr << s;
+        // s += "\n";
+        fptr << s << std::endl;
     }
+    fptr.close();
 }
 
 int hashClass::findTableSize()                                      //Total number of items in the table.

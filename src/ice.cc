@@ -29,7 +29,6 @@ void IceDB::Open(std::string name)
     icem_path.append(".icem");
     icem.open(icem_path, std::fstream::in);
     this->db.meta.read_metadata(icem);
-
 }
 
 void IceDB::Close(std::string name)
@@ -71,4 +70,9 @@ void IceDB::Delete(std::string key)
 void IceDB::Update(std::string key, std::string data)
 {
     this->db.hash.UpdateValue(key, data);
+}
+
+void IceDB::PrintAll()
+{
+    this->db.hash.PrintTable();
 }
