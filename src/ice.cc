@@ -8,7 +8,7 @@
 // Initialize the main path of the created databases to the default value
 IceDB::IceDB()
 {
-    system("mkdir /var/lib/icedb");
+    // system("mkdir /var/lib/icedb");
     this->path = "/var/lib/icedb/";
 }
 
@@ -47,7 +47,7 @@ void IceDB::Close(std::string name)
     // Prepare the path for the .icem file and send it to Metadata class
     icem_path.append(this->path);
     icem_path.append(name);
-    icem_path.append(".iced");
+    icem_path.append(".icem");
     icem.open(icem_path, std::fstream::out | std::fstream::trunc);
     int size = this->db.hash.findTableSize();
     this->db.meta.write_metadata(icem, name, size);

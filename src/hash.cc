@@ -19,16 +19,15 @@ hashClass::hashClass()
 void hashClass::ReadDB(std::ifstream& fptr)  
 {
     int i;
-    std::string str;
+    std::string str, key, data;
     while(getline(fptr, str))
     {
-        std::cout << "HERE\n";
         i = 0;
         while(str[i] != ',')
             i++;
-        std::string key = str.substr(0, i);                          //When writing, we store the key first, a comma, followed by the key value pairs to be inserted in the map, each separated by a comma.
-        std::string data = str.substr(i + 1);                        //This is the data part, the key value pairs to be stored in the map.
-        std::cout << key << " : " << data;
+        key = str.substr(0, i);                          //When writing, we store the key first, a comma, followed by the key value pairs to be inserted in the map, each separated by a comma.
+        data = str.substr(i + 1);                        //This is the data part, the key value pairs to be stored in the map.
+        // std::cout << key << " : " << data;
         this->SetValue(key, data);
     }
     fptr.close();
@@ -52,7 +51,8 @@ void hashClass::WriteDB(std::ofstream& fptr)
                 s += ',' + key + ':' + value;
             }
             s += "\n";
-            fptr << s;   
+            fptr << s;           // std::cout << key << " : " << data;
+
             ptr = ptr->next;                                         //Write to file.
         }
         std::string s = ptr->key;                                    //For last item.
@@ -118,12 +118,17 @@ void hashClass::SetValue(std::string key, std::string data)                 //Ad
             getline(check2, inter, ':');
             std::string t = inter;
             this->store[index]->mp[a] = t;
-            // std::cout << a << " is set for : " << key << endl;
+            // std::cout << a << " is set for : " << key << std::endl;
         }
     }
 
     else
     {
+        if(this->store[index]->key == key)
+        {
+            std::cout << "Given key present in table. Select new key." << std::endl;
+            return; 
+        }
         Key_Value* x = this->store[index];                          
         Key_Value* new_value = new Key_Value;
         new_value->key = key;
