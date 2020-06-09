@@ -42,12 +42,13 @@ private:
 public:
     Database db;
     IceDB();
-    void Open(std::string);
+    void Open(std::string name);
     void Close(std::string name);
     void Set(std::string key, std::string data);
     void Get(std::string key);
     void Delete(std::string key);
     void Update(std::string key, std::string data);
+    void PrintAll();
 };
 
 #endif
