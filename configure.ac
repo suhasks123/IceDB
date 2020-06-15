@@ -15,6 +15,19 @@ AC_CONFIG_MACRO_DIRS([m4])
 
 LT_INIT()
 
+dnl To Check for GNU readline
+PKG_CHECK_MODULES([READLINE], [readline], [
+    LIBS="$READLINE_LIBS $LIBS"
+    CXXFLAGS="$READLINE_CXXFLAGS $CXXFLAGS"
+    AC_DEFINE([HAVE_READLINE], [1], [Define if readline is available])
+], [
+    AC_SEARCH_LIBS([readline], [readline], [
+        AC_DEFINE([HAVE_READLINE], [1], [Define if readline is available])
+    ], [
+        AC_MSG_ERROR([*** readline not found. Please install GNU readline before building.])
+    ])
+])
+
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_FILES([Makefile])
 
