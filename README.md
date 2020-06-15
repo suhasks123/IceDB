@@ -9,9 +9,20 @@ This is the main repository for IceDB, a Key-Value Store Database Management Sys
 ## Build Instructions:
 Make sure the current working directory is the main IceDB directory before running these commands:
 
+For the normal build, use the following commands:
+
+```bash
+$ autoreconf -i
+$ ./configure
+$ make
+```
+This will place object files and other build related files inside the root directory of the repository.
+
+For the VPATH build, to make sure that the root directory of the repository is clean, run the following commands:
+
 ```
 $ autoreconf -i
-$ rm -rf ./build/*
+$ mkdir build
 $ cd build
 $ ../configure
 $ make
@@ -34,6 +45,8 @@ The build is handled by CMake.
 - autoconf (>= 2.69)
 - automake (>= 1.15)
 - Libtool (>= 2.4.6)
+- pkg-config
+- libreadline-dev (Development files for GNU readline)
 
 ## Contributors:
 - Suhas K S(181CO253) - https://github.com/suhasks123
