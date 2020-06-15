@@ -124,12 +124,16 @@ int main()
             continue;
         }
 
-        for(auto i : tokens)
-            std::cout << i << std::endl;
+        /* Uncomment for testing the tokenization */
+
+        // for(auto i : tokens)                                                 
+        //     std::cout << i << std::endl;
 
         fflush(stdin);
 
         // The instruction processing - Call the library
+
+        
     }
     return 0;
 }
