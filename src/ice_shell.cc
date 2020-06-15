@@ -5,6 +5,10 @@
 
 #include "ice.hpp"
 
+IceDB ice;
+bool openflag = 0;
+std::string open_db = "";
+
 std::string read_instr(){
     
     std::string inp;
@@ -28,6 +32,24 @@ std::vector<std::string> tokenize(std::string command){
     std::string func = command.substr(0, i);
     if(func != "open" || func != "close" || func != "set" || func != "get" || func != "update" || func != "delete" || func != "display")
         tokens.push_back(func);
+
+    if(func != "open" && !openflag)
+    {
+        std::cout << "No database is open. Open first" << std::endl;
+        return {};
+    }
+
+    if(func == "open" && openflag)
+    {
+        std::cout << "Close current database first." << std::endl;
+        return {};
+    }
+
+    if(func == "close" && !openflag)
+    {
+        std::cout << "Open database first." << std::endl;
+        return {};
+    }
 
     if(func == "open" || func == "close")                                  // open <database_name> or close <database_name>
     {
@@ -104,6 +126,24 @@ std::vector<std::string> tokenize(std::string command){
         return {};
 }
 
+void processing(std::vector<std::string> tokens)
+{
+    if(tokens[0] == "open")
+        ice.Open(tokens[1]);
+    else if(tokens[0] == "close")
+        ice.Close(tokens[1]);
+    else if(tokens[0] == "display")
+        ice.PrintAll();
+    else if(tokens[0] == "set")
+        ice.Set(tokens[1], tokens[2]);
+    else if(tokens[0] == "get")
+        ice.Get(tokens[1]);
+    else if(tokens[0] == "update")
+        ice.Update(tokens[1], tokens[2]);
+    else if(tokens[0] == "delete")
+        ice.Delete(tokens[1]);
+}
+
 int main()
 {
     while(true)
@@ -124,6 +164,24 @@ int main()
             continue;
         }
 
+        if(tokens[0] == "open")
+        {
+            openflag = true;
+            open_db = tokens[1];
+        }
+        if(tokens[0] == "close")
+        {
+            if(tokens[1] != open_db)
+            {
+                std::cout << "Invalid database name to close" << std::endl;
+                continue;
+            }
+            else
+            {
+                openflag = false;
+                open_db = "";
+            }
+        }
         /* Uncomment for testing the tokenization */
 
         // for(auto i : tokens)                                                 
@@ -133,7 +191,7 @@ int main()
 
         // The instruction processing - Call the library
 
-        
+        processing(tokens);        
     }
     return 0;
 }
