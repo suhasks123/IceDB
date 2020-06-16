@@ -13,6 +13,7 @@ class hashClass{
 
     private:
         static const int TableSize = 10;
+        std::string priv_key = "kjfgkejgniebg"; 
 
         struct Key_Value{
             std::string key;

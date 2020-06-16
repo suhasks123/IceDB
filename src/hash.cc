@@ -5,6 +5,9 @@
 #include <bits/stdc++.h>
 
 #include "hashClass.hpp"
+#include "b64.h"
+#include "encrypt.h"
+#include "vigenere.hpp"
 
 hashClass::hashClass()
 {
@@ -19,10 +22,11 @@ hashClass::hashClass()
 void hashClass::ReadDB(std::ifstream& fptr)  
 {
     int i;
-    std::string str, key, data;
-    while(getline(fptr, str))
+    std::string str, key, data, enc;
+    while(getline(fptr, enc))
     {
         i = 0;
+        str = decrypt(enc, priv_key);
         while(str[i] != ',')
             i++;
         key = str.substr(0, i);                          //When writing, we store the key first, a comma, followed by the key value pairs to be inserted in the map, each separated by a comma.
@@ -51,8 +55,8 @@ void hashClass::WriteDB(std::ofstream& fptr)
                 s += ',' + key + ':' + value;
             }
             s += "\n";
+            std::string en = encrypt(s, priv_key); 
             fptr << s;           // std::cout << key << " : " << data;
-
             ptr = ptr->next;                                         //Write to file.
         }
         std::string s = ptr->key;                                    //For last item.
@@ -63,6 +67,7 @@ void hashClass::WriteDB(std::ofstream& fptr)
             s += ',' + key + ':' + value;
         }
         s += "\n";
+        std::string en = encrypt(s, priv_key); 
         fptr << s;
     }
     fptr.close();
