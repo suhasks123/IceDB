@@ -5,6 +5,7 @@
 #include <bits/stdc++.h>
 
 #include "hashClass.hpp"
+#include "encrypt.h"
 
 hashClass::hashClass()
 {
@@ -19,10 +20,11 @@ hashClass::hashClass()
 void hashClass::ReadDB(std::ifstream& fptr)  
 {
     int i;
-    std::string str, key, data;
-    while(getline(fptr, str))
+    std::string str, key, data, enc;
+    while(getline(fptr, enc))
     {
         i = 0;
+        str = decrypt(enc, priv_key);
         while(str[i] != ',')
             i++;
         key = str.substr(0, i);                          //When writing, we store the key first, a comma, followed by the key value pairs to be inserted in the map, each separated by a comma.
@@ -51,8 +53,8 @@ void hashClass::WriteDB(std::ofstream& fptr)
                 s += ',' + key + ':' + value;
             }
             s += "\n";
+            std::string en = encrypt(s, priv_key); 
             fptr << s;           // std::cout << key << " : " << data;
-
             ptr = ptr->next;                                         //Write to file.
         }
         std::string s = ptr->key;                                    //For last item.
@@ -63,6 +65,7 @@ void hashClass::WriteDB(std::ofstream& fptr)
             s += ',' + key + ':' + value;
         }
         s += "\n";
+        std::string en = encrypt(s, priv_key); 
         fptr << s;
     }
     fptr.close();
@@ -169,8 +172,7 @@ void hashClass::PrintTable()                                                    
             continue;
 
         n = NumberOfItems(i);
-
-        std::cout << "Number of values at index " << i << " are: " << n << std::endl;
+        std::cout << "Number of values in bucket " << i << " are: " << n << std::endl;
         while(ptr->next!=NULL)
         {
             std::cout << "--------------------\n";
@@ -190,18 +192,23 @@ void hashClass::PrintTable()                                                    
     }
 }
 
-void hashClass::PrintBucket(int index)                                          //Print all items of a given bucket.
+bool hashClass::PrintBucket(std::string key)                                          //Print all items of a given bucket.
 {
-    if(index < 0 || index >= TableSize)
-    {
-        std::cout << "Invalid index" << std::endl;
-        return;
-    }
-    else if(this->store[index]->key == "NULL")
+    int index = Hash(key);
+    if(this->store[index]->key == "NULL")
     {
         std::cout << "Bucket is empty" << std::endl;
-        return;
+        return false;
     }
+    Key_Value* p = this->store[index];
+    while(p != NULL){
+        if(p->key == key)
+            break;
+        p = p->next;
+    }
+    if(!p)                                                                          //Bucket has elements but key not there.
+        return false;
+        
     std::cout << "Bucket " << index << " info : " << std::endl;
     Key_Value* ptr = this->store[index];
     while(ptr != NULL)
@@ -216,6 +223,7 @@ void hashClass::PrintBucket(int index)                                          
         }
         ptr = ptr->next;
     }
+    return true;
 }
 
 void hashClass::GetValue(std::string key)

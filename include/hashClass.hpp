@@ -13,6 +13,7 @@ class hashClass{
 
     private:
         static const int TableSize = 10;
+        std::string priv_key = "kjfgkejgniebg"; 
 
         struct Key_Value{
             std::string key;
@@ -32,7 +33,7 @@ class hashClass{
         int findTableSize();
         int NumberOfItems(int index);
         void PrintTable();
-        void PrintBucket(int index);
+        bool PrintBucket(std::string key);
         void GetValue(std::string key);
         void DeleteValue(std::string key);
         void UpdateValue(std::string key, std::string data);

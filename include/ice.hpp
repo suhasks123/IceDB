@@ -49,6 +49,7 @@ public:
     void Delete(std::string key);
     void Update(std::string key, std::string data);
     void PrintAll();
+    void PrintKeyBucket(std::string key);
 };
 
 #endif
