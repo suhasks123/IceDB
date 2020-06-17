@@ -69,8 +69,16 @@ std::vector<std::string> tokenize(std::string command){
         return tokens;
     }
 
-    else if(func == "display")                                               // Print entire database
-        return tokens;
+    else if(func == "display"){                                               // Print entire database
+        while(i < command.length() && command[i] == ' ')
+            i++;
+        if(i == command.length())                                             //Print All
+            return tokens;
+        std::string key = command.substr(i);
+        tokens.push_back(key);
+        return tokens;                                                        //Print bucket
+    }
+
 
     else if(func == "update" || func == "set")                               // update / set <key>, <key-value pair 1>, <key-value pair 2>....
     {
@@ -133,7 +141,12 @@ void processing(std::vector<std::string> tokens)
     else if(tokens[0] == "close")
         ice.Close(tokens[1]);
     else if(tokens[0] == "display")
-        ice.PrintAll();
+    {
+        if(tokens.size() == 1)
+            ice.PrintAll();
+        else
+            ice.PrintKeyBucket(tokens[1]);
+    }
     else if(tokens[0] == "set")
         ice.Set(tokens[1], tokens[2]);
     else if(tokens[0] == "get")

@@ -1,11 +1,7 @@
-#include <stdio.h>
-#include <string.h>
 #include <string>
 #include <iostream>
 #include <stdio.h>
 #include <ctype.h>
-
-using namespace std;
 
 std::string AVAILABLE_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ";
 

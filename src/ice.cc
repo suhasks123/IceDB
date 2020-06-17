@@ -77,3 +77,10 @@ void IceDB::PrintAll()
 {
     this->db.hash.PrintTable();
 }
+
+void IceDB::PrintKeyBucket(std::string key)
+{
+    bool ok = this->db.hash.PrintBucket(key);
+    if(!ok)
+        std::cout << "Given key not present in table" << std::endl;
+}

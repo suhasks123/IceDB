@@ -5,9 +5,7 @@
 #include <bits/stdc++.h>
 
 #include "hashClass.hpp"
-#include "b64.h"
 #include "encrypt.h"
-#include "vigenere.hpp"
 
 hashClass::hashClass()
 {
@@ -174,8 +172,7 @@ void hashClass::PrintTable()                                                    
             continue;
 
         n = NumberOfItems(i);
-
-        std::cout << "Number of values at index " << i << " are: " << n << std::endl;
+        std::cout << "Number of values in bucket " << i << " are: " << n << std::endl;
         while(ptr->next!=NULL)
         {
             std::cout << "--------------------\n";
@@ -195,18 +192,23 @@ void hashClass::PrintTable()                                                    
     }
 }
 
-void hashClass::PrintBucket(int index)                                          //Print all items of a given bucket.
+bool hashClass::PrintBucket(std::string key)                                          //Print all items of a given bucket.
 {
-    if(index < 0 || index >= TableSize)
-    {
-        std::cout << "Invalid index" << std::endl;
-        return;
-    }
-    else if(this->store[index]->key == "NULL")
+    int index = Hash(key);
+    if(this->store[index]->key == "NULL")
     {
         std::cout << "Bucket is empty" << std::endl;
-        return;
+        return false;
     }
+    Key_Value* p = this->store[index];
+    while(p != NULL){
+        if(p->key == key)
+            break;
+        p = p->next;
+    }
+    if(!p)                                                                          //Bucket has elements but key not there.
+        return false;
+        
     std::cout << "Bucket " << index << " info : " << std::endl;
     Key_Value* ptr = this->store[index];
     while(ptr != NULL)
@@ -221,6 +223,7 @@ void hashClass::PrintBucket(int index)                                          
         }
         ptr = ptr->next;
     }
+    return true;
 }
 
 void hashClass::GetValue(std::string key)

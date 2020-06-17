@@ -3,9 +3,6 @@
 #include <iostream>
 #include <vector>
 
-using namespace std;
-
-
 static std::string base64_encode(const std::string &in) {
 
     std::string out;
