@@ -7,7 +7,10 @@ libice_la_SOURCES = \
  src/hash.cc \
  src/ice.cc \
  src/Metadata.cc \
- src/Database.cc
+ src/Database.cc \
+ include/b64.h \
+ include/encrypt.h \
+ include/vigenere.hpp
 libice_la_CPPFLAGS = -I$(top_srcdir)/include
 
 

@@ -50,6 +50,7 @@ public:
     void Update(std::string key, std::string data);
     void PrintAll();
     void PrintKeyBucket(std::string key);
+    void Drop(std::string name);
 };
 
 #endif

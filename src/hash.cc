@@ -24,7 +24,8 @@ void hashClass::ReadDB(std::ifstream& fptr)
     while(getline(fptr, enc))
     {
         i = 0;
-        str = decrypt(enc, priv_key);
+        //str = decrypt(enc, priv_key);
+        str = enc;
         while(str[i] != ',')
             i++;
         key = str.substr(0, i);                          //When writing, we store the key first, a comma, followed by the key value pairs to be inserted in the map, each separated by a comma.
@@ -75,7 +76,7 @@ int hashClass::findTableSize()                                      //Total numb
 {
     int i;
     int ans = 0;
-    for(i = 0;i < TableSize; i++)                               
+    for(i = 0;i < TableSize; i++)
         ans += NumberOfItems(i);
     return ans;
 }

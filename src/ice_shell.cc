@@ -5,35 +5,84 @@
 
 #include "ice.hpp"
 
-IceDB ice;
+IceDB *ice;
+IceDB *global_metadata;
 bool openflag = 0;
 std::string open_db = "";
 
-std::string read_instr(){
-    
+// Functions
+std::string read_instr();
+std::vector<std::string> tokenize(std::string command);
+void processing(std::vector<std::string> tokens);
+void display_help();
+
+int main()
+{
+    global_metadata = new IceDB();
+    global_metadata->Open("global_metadata");
+    std::cout << "IceDB version 0.1\n";
+    std::cout << "Run 'help' for the list of shell commands\n";
+    std::cout << "Make sure that the shell is run as root. If not, exit the shell and run as root\n";
+    while(true)
+    {
+        // The instruction read
+        std::string command = read_instr();
+        if(command.length() < 3)
+            continue;
+
+        // The instruction parse - Tokenisation
+        int i;
+        std::vector<std::string> tokens = tokenize(command);
+        /*if(!tokens.size() && (tokens[0] != "exit" && tokens[0] !=
+            "quit" && tokens[0] != "help" && tokens[0] != "list"))*/
+        if(tokens.size() <= 0)
+        {
+            std::cout << "Invalid command" << std::endl;
+            continue;
+        }
+
+        fflush(stdin);
+
+        // The instruction processing - Call the library
+        processing(tokens);        
+    }
+    return 0;
+}
+
+std::string read_instr()
+{
+    std::string current_db = open_db;
+    if (current_db == "")
+        current_db = ":>> ";
+    else
+        current_db += " :>> ";
     std::string inp;
-    // std::cin >> inp; 
-    inp = readline(">>");
+    const char *prompt = current_db.c_str();
+    inp = readline(prompt);
     return inp;
 }
 
-std::vector<std::string> tokenize(std::string command){
-
+std::vector<std::string> tokenize(std::string command)
+{
     std::vector<std::string> tokens;
     int i, j;
 
     i = 0;
-    while(command[i] == ' ')                                              //Truncate spaces from the beginning
+
+    //Truncate spaces from the beginning
+    while(command[i] == ' ')
         i++;     
     while(i < command.length() && command[i] != ' '){
         i++;
     }
 
     std::string func = command.substr(0, i);
-    if(func != "open" || func != "close" || func != "set" || func != "get" || func != "update" || func != "delete" || func != "display")
+    if(func != "open" || func != "close" || func != "set" || func != "get" ||
+       func != "update" || func != "delete" || func != "display" || func != "drop" ||
+       func != "exit" || func != "quit" || func != "help" || func != "list")
         tokens.push_back(func);
 
-    if(func != "open" && !openflag)
+    if((func != "open" && !openflag) && (func != "exit" && func != "quit" && func != "help" && func != "list"))
     {
         std::cout << "No database is open. Open first" << std::endl;
         return {};
@@ -45,13 +94,8 @@ std::vector<std::string> tokenize(std::string command){
         return {};
     }
 
-    if(func == "close" && !openflag)
-    {
-        std::cout << "Open database first." << std::endl;
-        return {};
-    }
-
-    if(func == "open" || func == "close")                                  // open <database_name> or close <database_name>
+    // open <database_name> or close <database_name>
+    if(func == "open" || func == "close" || func == "drop")
     {
         while(i < command.length() && command[i] == ' ')
             i++;
@@ -60,7 +104,8 @@ std::vector<std::string> tokenize(std::string command){
         return tokens;
     }
 
-    else if(func == "delete" || func == "get")                               // get <key> or delete <key> 
+    // get <key> or delete <key>
+    else if(func == "delete" || func == "get")
     {
         while(i < command.length() && command[i] == ' ')
             i++;
@@ -69,18 +114,23 @@ std::vector<std::string> tokenize(std::string command){
         return tokens;
     }
 
-    else if(func == "display"){                                               // Print entire database
+    // Print entire database
+    else if(func == "display"){
         while(i < command.length() && command[i] == ' ')
             i++;
-        if(i == command.length())                                             //Print All
+        
+        //Print All
+        if(i == command.length())
             return tokens;
         std::string key = command.substr(i);
         tokens.push_back(key);
-        return tokens;                                                        //Print bucket
+
+        //Print bucket
+        return tokens;
     }
 
-
-    else if(func == "update" || func == "set")                               // update / set <key>, <key-value pair 1>, <key-value pair 2>....
+    // update / set <key>, <key-value pair 1>, <key-value pair 2>....
+    else if(func == "update" || func == "set")
     {
         std::vector<std::string> kv;
         while(command[i] == ' ')
@@ -89,10 +139,13 @@ std::vector<std::string> tokenize(std::string command){
         j = 0;
         while(j < remaining.length() && remaining[j] != ',')
             j++;
-        std::string key = remaining.substr(0, j);                       // Get the key
+
+        // Get the key
+        std::string key = remaining.substr(0, j);
         tokens.push_back(key);
 
-        for(i = j + 1; i < remaining.length(); i++)                     // Get the key value pairs
+        // Get the key value pairs
+        for(i = j + 1; i < remaining.length(); i++)
         {
             while(i < remaining.length() && remaining[i] == ' ')
                 i++;
@@ -110,10 +163,14 @@ std::vector<std::string> tokenize(std::string command){
             j = 0;
             while(j < pair.length() && pair[j] == ' ')
                 j++;
-            int ks = j;                                                 // Key start index
+
+            // Key start index
+            int ks = j;
             while(j < pair.length() && pair[j] != ':')
                 j++;
-            std::string key = pair.substr(ks, j - ks);                  // From start index to length of the substr
+
+            // From start index to length of the substr
+            std::string key = pair.substr(ks, j - ks);
 
             int l = key.length();
             while(key[l - 1] == ' ')
@@ -130,6 +187,12 @@ std::vector<std::string> tokenize(std::string command){
         return tokens;
     }
 
+    else if (func == "exit" || func == "quit" || func == "help" || func == "list")
+    {
+        tokens.push_back(func);
+        return tokens;
+    }
+
     else 
         return {};
 }
@@ -137,74 +200,76 @@ std::vector<std::string> tokenize(std::string command){
 void processing(std::vector<std::string> tokens)
 {
     if(tokens[0] == "open")
-        ice.Open(tokens[1]);
+    {
+        openflag = true;
+        open_db = tokens[1];
+        ice = new IceDB();
+        ice->Open(tokens[1]);
+        std::string database_name = tokens[1];
+        std::string database_pair = "name:" + database_name;
+        global_metadata->Set(database_name,database_pair);
+    }
     else if(tokens[0] == "close")
-        ice.Close(tokens[1]);
+    {
+        if(tokens[1] != open_db)
+        {
+            std::cout << "Invalid database name to close" << std::endl;
+            return;
+        }
+        else
+        {
+            openflag = false;
+            open_db = "";
+        }
+        ice->Close(tokens[1]);
+        open_db = "";
+        delete ice;
+        global_metadata->Close("global_metadata");
+    }
     else if(tokens[0] == "display")
     {
         if(tokens.size() == 1)
-            ice.PrintAll();
+            ice->PrintAll();
         else
-            ice.PrintKeyBucket(tokens[1]);
+            ice->PrintKeyBucket(tokens[1]);
     }
     else if(tokens[0] == "set")
-        ice.Set(tokens[1], tokens[2]);
+        ice->Set(tokens[1], tokens[2]);
     else if(tokens[0] == "get")
-        ice.Get(tokens[1]);
+        ice->Get(tokens[1]);
     else if(tokens[0] == "update")
-        ice.Update(tokens[1], tokens[2]);
+        ice->Update(tokens[1], tokens[2]);
     else if(tokens[0] == "delete")
-        ice.Delete(tokens[1]);
+        ice->Delete(tokens[1]);
+    else if(tokens[0] == "drop")
+    {
+        ice->Drop(tokens[1]);
+        global_metadata->Delete(tokens[1]);
+        ice->Close(tokens[1]);
+    }
+    else if(tokens[0] == "help")
+        display_help();
+    else if(tokens[0] == "list")
+        global_metadata->PrintAll();
+    else if(tokens[0] == "exit" || tokens[0] == "quit")
+    {
+        global_metadata->Close("global_metadata");
+        exit(0);
+    }
 }
 
-int main()
+void display_help()
 {
-    while(true)
-    {
-        // The instruction read
-
-        std::string command = read_instr();
-        if(command.length() < 3)
-            continue;
-
-        // The instruction parse - Tokenisation
-
-        int i;
-        std::vector<std::string> tokens = tokenize(command);
-        if(!tokens.size())
-        {
-            std::cout << "Invalid command" << std::endl;
-            continue;
-        }
-
-        if(tokens[0] == "open")
-        {
-            openflag = true;
-            open_db = tokens[1];
-        }
-        if(tokens[0] == "close")
-        {
-            if(tokens[1] != open_db)
-            {
-                std::cout << "Invalid database name to close" << std::endl;
-                continue;
-            }
-            else
-            {
-                openflag = false;
-                open_db = "";
-            }
-        }
-        /* Uncomment for testing the tokenization */
-
-        // for(auto i : tokens)                                                 
-        //     std::cout << i << std::endl;
-
-        fflush(stdin);
-
-        // The instruction processing - Call the library
-
-        processing(tokens);        
-    }
-    return 0;
+    std::cout << "\nList of commands in the current shell:\n";
+    std::cout << "1. open <database-name> : Open a database\n";
+    std::cout << "2. close <database-name> : Close a database\n";
+    std::cout << "3. get <master-key> : Get an entry based on the master key\n";
+    std::cout << "4. set <master-key>, <key>:<value>, <key>:<value>.... : Insert an entry\n";
+    std::cout << "5. update <master-key>, <key>:<value>, <key>:<value>.... : Update an entry\n";
+    std::cout << "6. delete <master-key> : Delete an entry based in the master key\n";
+    std::cout << "7. drop <database-name> : Drop, i.e, delete a database\n";
+    std::cout << "8. list : List all the existing databases on the current machine\n";
+    std::cout << "9. exit / quit : Exit the shell\n";
+    std::cout << "10. help : Display help\n";
+    std::cout << "Note: Changes to the database will not be saved unless the database is closed.\n\n";
 }
