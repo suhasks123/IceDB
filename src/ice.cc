@@ -61,9 +61,9 @@ void IceDB::Set(std::string key, std::string data)
     this->db.hash.SetValue(key, data);
 }
 
-void IceDB::Get(std::string key)
+std::map<std::string, std::string> IceDB::Get(std::string key)
 {
-    this->db.hash.GetValue(key);
+    return this->db.hash.GetValue(key);
 }
 
 void IceDB::Delete(std::string key)

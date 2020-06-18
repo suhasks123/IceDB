@@ -45,7 +45,7 @@ public:
     void Open(std::string name);
     void Close(std::string name);
     void Set(std::string key, std::string data);
-    void Get(std::string key);
+    std::map<std::string, std::string> Get(std::string key);
     void Delete(std::string key);
     void Update(std::string key, std::string data);
     void PrintAll();
