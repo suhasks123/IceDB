@@ -39,7 +39,7 @@ The Repo follows a standard C++ Project structure with:
 5. **lib**: For storing dependencies as static libraries.
 6. **src**: For storing source files.
 
-The build is handled by CMake.
+The build is handled by autotools.
 
 ## Dependencies:
 - autoconf (>= 2.69)
@@ -47,6 +47,19 @@ The build is handled by CMake.
 - Libtool (>= 2.4.6)
 - pkg-config
 - libreadline-dev (Development files for GNU readline)
+
+## Encryption:
+The master branch doesn't have encryption support. In order to build the application without encryption support:
+```bash
+git clone https://github.com/suhasks123/IceDB.git
+```
+
+For encryption support, clone the `encryption-support` branch:
+```bash
+git clone -b encryption-support https://github.com/suhasks123/IceDB.git
+```
+
+Databases are essentially encrypted when the code from the `encryption-support` branch is used.
 
 ## Contributors:
 - Suhas K S(181CO253) - https://github.com/suhasks123
