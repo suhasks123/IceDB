@@ -227,7 +227,7 @@ bool hashClass::PrintBucket(std::string key)                                    
     return true;
 }
 
-std::map<std::string, std::string> hashClass::GetValue(std::string key)
+std::map<std::string, std::string> *hashClass::GetValue(std::string key)
 {
     int index = Hash(key);                                          //Finding bucket
     bool found = false;
@@ -249,11 +249,12 @@ std::map<std::string, std::string> hashClass::GetValue(std::string key)
         for(auto i : ptr->mp)
             std::cout << i.first << " : " << i.second << std::endl;
         std::cout << "-------------------\n";*/
-        return ptr->mp;
+        return &(ptr->mp);
     }
     else                                                            //Item not found
     {
-        std::cout << key << " was not found in table." << std::endl;
+        std::cout << key << " was not found in table.\n";
+        return NULL;
     }
 }
 

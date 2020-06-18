@@ -237,9 +237,9 @@ void processing(std::vector<std::string> tokens)
         ice->Set(tokens[1], tokens[2]);
     else if(tokens[0] == "get")
     {
-        std::map<std::string, std::string> data = ice->Get(tokens[1]);
+        std::map<std::string, std::string> *data = ice->Get(tokens[1]);
         std::cout << "Value " << tokens[1] << " present in table\n";
-        for(auto i : data)
+        for(auto i : *data)
             std::cout << i.first << " : " << i.second << std::endl;
         std::cout << "-------------------\n";
     }

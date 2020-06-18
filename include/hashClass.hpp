@@ -34,7 +34,7 @@ class hashClass{
         int NumberOfItems(int index);
         void PrintTable();
         bool PrintBucket(std::string key);
-        std::map<std::string, std::string> GetValue(std::string key);
+        std::map<std::string, std::string> *GetValue(std::string key);
         void DeleteValue(std::string key);
         void UpdateValue(std::string key, std::string data);
 };
