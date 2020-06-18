@@ -42,6 +42,8 @@ The Repo follows a standard C++ Project structure with:
 The build is handled by autotools.
 
 ## Dependencies:
+
+All of these applications and libraries need to be installed before building IceDB.
 - autoconf (>= 2.69)
 - automake (>= 1.15)
 - Libtool (>= 2.4.6)
