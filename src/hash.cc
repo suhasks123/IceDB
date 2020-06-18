@@ -24,8 +24,9 @@ void hashClass::ReadDB(std::ifstream& fptr)
     while(getline(fptr, enc))
     {
         i = 0;
-        //str = decrypt(enc, priv_key);
-        str = enc;
+        // enc = enc.substr(0, enc.length() - 1);
+        str = decrypt(enc, priv_key);
+        // str = enc;
         while(str[i] != ',')
             i++;
         key = str.substr(0, i);                          //When writing, we store the key first, a comma, followed by the key value pairs to be inserted in the map, each separated by a comma.
@@ -44,30 +45,30 @@ void hashClass::WriteDB(std::ofstream& fptr)
         Key_Value* ptr = this->store[i];
         if(ptr->key == "NULL")
             continue;
-        while(ptr->next != NULL)                                     //For every item
+        while(ptr->next != NULL)                                     // For every item
         {
-            std::string s = ptr->key;                                //Write "key,key1:value1,key2:value2....."
+            std::string s = ptr->key;                                // Write "key,key1:value1,key2:value2....."
             for(auto j: ptr->mp)
             {
                 std::string key = j.first;
                 std::string value = j.second;
                 s += ',' + key + ':' + value;
             }
-            s += "\n";
             std::string en = encrypt(s, priv_key); 
-            fptr << s;           // std::cout << key << " : " << data;
-            ptr = ptr->next;                                         //Write to file.
+            en += "\n";
+            fptr << en;                                               // std::cout << key << " : " << data;
+            ptr = ptr->next;                                         // Write to file.
         }
-        std::string s = ptr->key;                                    //For last item.
+        std::string s = ptr->key;                                    // For last item.
         for(auto j: ptr->mp)
         {
             std::string key = j.first;
             std::string value = j.second;
             s += ',' + key + ':' + value;
         }
-        s += "\n";
         std::string en = encrypt(s, priv_key); 
-        fptr << s;
+        en += "\n";
+        fptr << en;
     }
     fptr.close();
 }
