@@ -6,7 +6,7 @@
 #include "ice.hpp"
 
 IceDB *ice;
-IceDB *global_metadata;
+//IceDB *global_metadata;
 bool openflag = 0;
 std::string open_db = "";
 
@@ -18,8 +18,8 @@ void display_help();
 
 int main()
 {
-    global_metadata = new IceDB();
-    global_metadata->Open("global_metadata");
+    //global_metadata = new IceDB();
+    //global_metadata->Open("global_metadata");
     std::cout << "IceDB version 0.1\n";
     std::cout << "Run 'help' for the list of shell commands\n";
     std::cout << "Make sure that the shell is run as root. If not, exit the shell and run as root\n";
@@ -207,7 +207,7 @@ void processing(std::vector<std::string> tokens)
         ice->Open(tokens[1]);
         std::string database_name = tokens[1];
         std::string database_pair = "name:" + database_name;
-        global_metadata->Set(database_name,database_pair);
+        //global_metadata->Set(database_name,database_pair);
     }
     else if(tokens[0] == "close")
     {
@@ -224,7 +224,7 @@ void processing(std::vector<std::string> tokens)
         ice->Close(tokens[1]);
         open_db = "";
         delete ice;
-        global_metadata->Close("global_metadata");
+        //global_metadata->Close("global_metadata");
     }
     else if(tokens[0] == "display")
     {
@@ -250,16 +250,16 @@ void processing(std::vector<std::string> tokens)
     else if(tokens[0] == "drop")
     {
         ice->Drop(tokens[1]);
-        global_metadata->Delete(tokens[1]);
+        //global_metadata->Delete(tokens[1]);
         ice->Close(tokens[1]);
     }
     else if(tokens[0] == "help")
         display_help();
-    else if(tokens[0] == "list")
-        global_metadata->PrintAll();
+    //else if(tokens[0] == "list")
+        //global_metadata->PrintAll();
     else if(tokens[0] == "exit" || tokens[0] == "quit")
     {
-        global_metadata->Close("global_metadata");
+        //global_metadata->Close("global_metadata");
         exit(0);
     }
 }
