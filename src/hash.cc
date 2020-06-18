@@ -177,7 +177,7 @@ void hashClass::PrintTable()                                                    
         while(ptr->next!=NULL)
         {
             std::cout << "--------------------\n";
-            std::cout << "Index = " << i << std::endl;
+            //std::cout << "Index = " << i << std::endl;
             std::cout << ptr->key << std::endl;
             for(auto j: ptr->mp){
                 std::cout << j.first << " : " << j.second << std::endl;
@@ -185,7 +185,7 @@ void hashClass::PrintTable()                                                    
             ptr = ptr->next;
         }   
         std::cout << "--------------------\n";                                              //Last item of bucket
-        std::cout << "Index = " << i << std::endl;
+        //std::cout << "Index = " << i << std::endl;
         std::cout << ptr->key << std::endl;
         for(auto j: ptr->mp)
             std::cout << j.first << " : " << j.second << std::endl;
