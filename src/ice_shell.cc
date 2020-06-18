@@ -274,8 +274,10 @@ void display_help()
     std::cout << "5. update <master-key>, <key>:<value>, <key>:<value>.... : Update an entry\n";
     std::cout << "6. delete <master-key> : Delete an entry based in the master key\n";
     std::cout << "7. drop <database-name> : Drop, i.e, delete a database\n";
-    std::cout << "8. list : List all the existing databases on the current machine\n";
-    std::cout << "9. exit / quit : Exit the shell\n";
-    std::cout << "10. help : Display help\n";
+    std::cout << "8. display : Display all the contents of the database.\n";
+    std::cout << "9. display <master-key> : Display the value of the given <master-key>.\n";
+    std::cout << "10. list : List all the existing databases on the current machine\n";
+    std::cout << "11. exit / quit : Exit the shell\n";
+    std::cout << "12. help : Display help\n";
     std::cout << "Note: Changes to the database will not be saved unless the database is closed.\n\n";
 }
