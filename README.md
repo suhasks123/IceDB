@@ -63,6 +63,9 @@ git clone -b encryption-support https://github.com/suhasks123/IceDB.git
 
 Databases are essentially encrypted when the code from the `encryption-support` branch is used.
 
+## Documentation:
+The report for the project is contained in the `docs/` directory in the repository.
+
 ## Contributors:
 - Suhas K S(181CO253) - https://github.com/suhasks123
 - Sai Krishna Anand (181CO244) - https://github.com/SaiKrishna1207
